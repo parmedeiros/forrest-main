@@ -1,0 +1,80 @@
+
+CREATE TABLE Sexo (
+                IdSexo TINYINT NOT NULL,
+                Descricao VARCHAR(10) NOT NULL,
+                CONSTRAINT Sexo_pk PRIMARY KEY (IdSexo)
+);
+
+
+CREATE TABLE Usuario (
+                IdUsuario SMALLINT NOT NULL,
+                NomeUusuario VARCHAR(30) NOT NULL,
+                senha VARCHAR(50) NOT NULL,
+                CONSTRAINT Usuario_pk PRIMARY KEY (IdUsuario)
+);
+
+
+CREATE TABLE Aluno (
+                IdAluno SMALLINT NOT NULL,
+                Nome VARCHAR(100) NOT NULL,
+                IdProfessor SMALLINT NOT NULL,
+                email VARCHAR(100) NOT NULL,
+                senha VARCHAR(50) NOT NULL,
+                Objetivo VARCHAR,
+                DataNasc DATE NOT NULL,
+                IdSexo TINYINT NOT NULL,
+                Altura NUMERIC(3,2),
+                Peso NUMERIC(5,2),
+                CONSTRAINT Aluno_pk PRIMARY KEY (IdAluno)
+);
+
+
+CREATE TABLE Treinos (
+                IdTreino INTEGER NOT NULL,
+                IdAluno SMALLINT NOT NULL,
+                DataTreino DATE NOT NULL,
+                PreTreino VARCHAR NOT NULL,
+                Distancia NUMERIC(5,3) NOT NULL,
+                Metodo VARCHAR NOT NULL,
+                Velocidade NUMERIC(4,2) NOT NULL,
+                Tempo TIME NOT NULL,
+                Ritmo NUMERIC(4,2) NOT NULL,
+                Observacao VARCHAR NOT NULL,
+                CONSTRAINT Treinos_pk PRIMARY KEY (IdTreino, IdAluno)
+);
+
+
+CREATE TABLE ConsultaTreino (
+                IdTreino INTEGER NOT NULL,
+                IdAluno SMALLINT NOT NULL,
+                CONSTRAINT ConsultaTreino_pk PRIMARY KEY (IdTreino, IdAluno)
+);
+
+
+ALTER TABLE Aluno ADD CONSTRAINT Sexo_Aluno_fk
+FOREIGN KEY (IdSexo)
+REFERENCES Sexo (IdSexo)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE Aluno ADD CONSTRAINT Usuario_Aluno_fk
+FOREIGN KEY (IdProfessor)
+REFERENCES Usuario (IdUsuario)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE Treinos ADD CONSTRAINT Aluno_Treinos_fk
+FOREIGN KEY (IdAluno)
+REFERENCES Aluno (IdAluno)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE ConsultaTreino ADD CONSTRAINT Treinos_Relatorio_fk
+FOREIGN KEY (IdTreino, IdAluno)
+REFERENCES Treinos (IdTreino, IdAluno)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
